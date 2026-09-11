@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio BTS SIO SLAM | Quentin JAWHAR</title>
+    
+    <!-- Importation de polices modernes (Poppins) et des icônes FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ================= VARIABLES & RESET (Thème Bleu Marine / Nuit) ================= */
+        :root {
+            --primary: #38bdf8; /* Bleu clair électrique / Cyan */
+            --primary-hover: #0284c7;
+            --secondary: #818cf8; /* Violet clair */
+            
+            /* Couleurs de fond sombres */
+            --bg-body: #081121; /* Bleu marine très profond */
+            --bg-card: #111c33; /* Bleu marine légèrement plus clair pour les cartes */
+            --bg-nav: rgba(8, 17, 33, 0.85); /* Pour le menu transparent */
+            
+            /* Textes clairs */
+            --text-main: #f8fafc; /* Blanc cassé */
+            --text-light: #94a3b8; /* Gris bleuté clair pour les textes secondaires */
+            
+            --success: #10b981;
+            --radius: 16px;
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            color: var(--text-main);
+            background-color: var(--bg-body);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ================= FOND ÉTOILES FILANTES ================= */
+        .night {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            transform: rotateZ(45deg);
+            z-index: -1;
+            top: 0;
+            left: 0;
+        }
+
+        .shooting_star {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            height: 2px;
+            background: linear-gradient(-45deg, rgba(56, 189, 248, 1), rgba(0, 0, 255, 0));
+            border-radius: 999px;
+            filter: drop-shadow(0 0 6px rgba(56, 189, 248, 1));
+            animation: tail 3000ms ease-in-out infinite, shooting 3000ms ease-in-out infinite;
+            opacity: 0.3; /* Très léger pour ne pas gêner la lecture */
+        }
+
+        .shooting_star::before {
+            content: '';
+            position: absolute;
+            top: calc(50% - 1px);
+            right: 0;
+            height: 2px;
+            background: linear-gradient(-45deg, rgba(0, 0, 255, 0), rgba(56, 189, 248, 1), rgba(0, 0, 255, 0));
+            transform: translateX(50%) rotateZ(45deg);
+            border-radius: 100%;
+            animation: shining 3000ms ease-in-out infinite;
+        }
+
+        .shooting_star::after {
+            content: '';
+            position: absolute;
+            top: calc(50% - 1px);
+            right: 0;
+            height: 2px;
+            background: linear-gradient(-45deg, rgba(0, 0, 255, 0), rgba(56, 189, 248, 1), rgba(0, 0, 255, 0));
+            transform: translateX(50%) rotateZ(-45deg);
+            border-radius: 100%;
+            animation: shining 3000ms ease-in-out infinite;
+        }
+
+        /* Positionnement et délais des différentes étoiles */
+        .shooting_star:nth-child(1) { top: calc(50% - 200px); left: calc(50% - 300px); animation-delay: 0ms; }
+        .shooting_star:nth-child(1)::before, .shooting_star:nth-child(1)::after { animation-delay: 0ms; }
+        .shooting_star:nth-child(2) { top: calc(50% + 100px); left: calc(50% - 500px); animation-delay: 1200ms; }
+        .shooting_star:nth-child(2)::before, .shooting_star:nth-child(2)::after { animation-delay: 1200ms; }
+        .shooting_star:nth-child(3) { top: calc(50% - 400px); left: calc(50% + 200px); animation-delay: 2400ms; }
+        .shooting_star:nth-child(3)::before, .shooting_star:nth-child(3)::after { animation-delay: 2400ms; }
+        .shooting_star:nth-child(4) { top: calc(50% + 300px); left: calc(50% + 400px); animation-delay: 4000ms; }
+        .shooting_star:nth-child(4)::before, .shooting_star:nth-child(4)::after { animation-delay: 4000ms; }
+
+        @keyframes tail {
+            0% { width: 0; }
+            30% { width: 100px; }
+            100% { width: 0; }
+        }
+        @keyframes shining {
+            0% { width: 0; }
+            50% { width: 30px; }
+            100% { width: 0; }
+        }
+        @keyframes shooting {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(800px); }
+        }
+
+        /* ================= NAVIGATION ================= */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--bg-nav);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span { color: var(--primary); }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* ================= SECTIONS GLOBALES ================= */
+        section {
+            padding: 120px 5% 80px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative; /* Pour passer au dessus des étoiles */
+            z-index: 1;
+        }
+
+        h2.section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--text-main);
+            margin-bottom: 3.5rem;
+            font-weight: 700;
+        }
+        
+        h2.section-title span {
+            color: var(--primary);
+        }
+
+        /* ================= BOUTONS ================= */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: var(--primary);
+            color: var(--bg-body); /* Texte foncé sur bouton clair */
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn:hover {
+            background: var(--primary-hover);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--bg-body);
+        }
+
+        /* ================= ACCUEIL ================= */
+        #accueil {
+            background: radial-gradient(circle at center, rgba(17,28,51,0.5) 0%, transparent 70%);
+            text-align: center;
+            align-items: center;
+        }
+
+        .badge-student {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        #accueil h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        #accueil h1 span {
+            background: -webkit-linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        #accueil p {
+            font-size: 1.2rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ================= PROFIL & SCOUTISME ================= */
+        #profil {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            margin: 0 5%;
+            box-shadow: var(--shadow-sm);
+            padding-top: 80px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .profil-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .scout-card {
+            background: rgba(56, 189, 248, 0.05);
+            border-left: 5px solid var(--primary);
+            padding: 2rem;
+            border-radius: 0 var(--radius) var(--radius) 0;
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .scout-icon {
+            font-size: 3rem;
+            color: var(--primary);
+        }
+
+        .scout-text h3 {
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .scout-text p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        /* ================= COMPÉTENCES ================= */
+        .skills-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-box {
+            background: var(--bg-card);
+            padding: 2.5rem 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .skill-box:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .skill-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .skill-box h3 { color: var(--text-main); margin-bottom: 1.5rem; font-weight: 600; }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-main);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* ================= PROJETS (E5) ================= */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .project-card:hover::before { opacity: 1; }
+
+        .project-content h3 { color: var(--text-main); margin-bottom: 8px; font-weight: 600;}
+        .project-context { 
+            font-size: 0.85rem; 
+            color: var(--primary); 
+            font-weight: 600; 
+            margin-bottom: 1rem; 
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.1);
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+        .project-content p { color: var(--text-light); font-size: 0.95rem; margin-bottom: 1.5rem; }
+
+        /* ================= TABLEAU E5 & PREUVES ================= */
+        .table-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            overflow-x: auto;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .e5-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .e5-table th, .e5-table td {
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 16px;
+        }
+
+        .e5-table th {
+            background-color: rgba(255,255,255,0.05);
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .e5-table th.bloc-title {
+            background-color: rgba(56, 189, 248, 0.15);
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .e5-table tr { transition: background 0.3s; }
+        .e5-table tr:hover { background-color: rgba(255,255,255,0.02); }
+        
+        /* Style des liens preuves à gauche */
+        .proof-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .proof-link i { color: #ef4444; font-size: 1.2rem; }
+        .proof-link:hover {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        /* ================= COCHES CLIQUABLES ================= */
+        .check-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.1); /* Fond vert léger */
+            color: var(--success);
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
+        }
+
+        .check-link:hover {
+            background: var(--success);
+            color: #fff;
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.6);
+        }
+
+        .download-section {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 2rem;
+        }
+
+        /* ================= VEILLE TECHNOLOGIQUE ================= */
+        .veille-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            padding: 3rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-md);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .veille-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .veille-header i { font-size: 2rem; color: var(--primary); }
+        .veille-header h3 { color: var(--text-main); font-size: 1.5rem; }
+
+        .veille-list { list-style: none; margin-top: 1.5rem; }
+        .veille-list li {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .veille-list li::before {
+            content: '\f105';
+            font-family: 'FontAwesome';
+            color: var(--primary);
+        }
+        .veille-list a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .veille-list a:hover { color: var(--primary); }
+
+        /* ================= HOBBIES ================= */
+        #hobbies {
+            min-height: auto;
+        }
+
+        .hobbies-intro {
+            max-width: 720px;
+            margin: -1.5rem auto 2.5rem;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .hobbies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .hobby-card {
+            background: var(--bg-card);
+            padding: 2rem 1.5rem;
+            border-radius: var(--radius);
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .hobby-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary);
+        }
+
+        .hobby-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .hobby-card h3 {
+            color: var(--text-main);
+            margin-bottom: 0.75rem;
+            font-size: 1.15rem;
+        }
+
+        .hobby-card p {
+            color: var(--text-light);
+            font-size: 0.92rem;
+        }
+
+        /* ================= CONTACT ================= */
+        #contact {
+            background: rgba(0,0,0,0.3);
+            text-align: center;
+            min-height: auto;
+            padding: 80px 5% 40px;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            color: var(--bg-body);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(56, 189, 248, 0.4);
+        }
+
+        footer {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            padding-top: 3rem;
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 3rem;
+            text-align: left;
+            margin-bottom: 2.5rem;
+        }
+
+        .footer-intro {
+            max-width: 420px;
+        }
+
+        .footer-name {
+            color: var(--text-main);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-name span {
+            color: var(--primary);
+        }
+
+        .footer-intro p {
+            color: var(--text-light);
+        }
+
+        .footer-contact {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .footer-contact a {
+            color: var(--text-main);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-contact a:hover {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer-bottom p {
+            margin: 0;
+        }
+
+        .footer-bottom .social-links {
+            margin-bottom: 0;
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            #accueil h1 { font-size: 2.8rem; }
+            section { padding: 100px 5% 60px; }
+            .scout-card { flex-direction: column; text-align: center; }
+            .proof-link { font-size: 0.85rem; }
+            .footer-content,
+            .footer-bottom {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .footer-contact { align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- FOND ANIMÉ : ÉTOILES FILANTES -->
+    <div class="night">
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+        <div class="shooting_star"></div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="#accueil" class="logo">Port<span>folio.</span></a>
+        <ul class="nav-links">
+            <li><a href="#accueil">Accueil</a></li>
+            <li><a href="#profil">Profil</a></li>
+            <li><a href="#hobbies">Hobbies</a></li>
+            <li><a href="#competences">Compétences</a></li>
+            <li><a href="#projets">Projets</a></li>
+            <li><a href="#tableau-e5">Synthèse E5</a></li>
+        </ul>
+    </nav>
+
+    <!-- ACCUEIL -->
+    <section id="accueil">
+        <span class="badge-student">BTS SIO Option SLAM (Bac+2)</span>
+        <h1>Développeur <span>En Devenir.</span></h1>
+        <p>Bonjour, je suis <strong>Quentin JAWHAR</strong>. Passionné par la création de solutions logicielles, je termine actuellement ma première année et je suis prêt à relever de nouveaux défis tech.</p>
+        <div class="hero-buttons">
+            <a href="#projets" class="btn"><i class="fas fa-code"></i> Découvrir mes projets</a>
+            <a href="cv-quentin.pdf" class="btn btn-outline" target="_blank"><i class="fas fa-download"></i> Télécharger mon CV</a>
+        </div>
+    </section>
+
+    <!-- PROFIL & SOFT SKILLS -->
+    <section id="profil">
+        <h2 class="section-title">À Propos <span>de moi</span></h2>
+        <div class="profil-content">
+            <p class="profil-text">
+                Étudiant curieux et investi, je me spécialise dans le développement d'applications métiers (SLAM). Au cours de cette première année de BTS SIO, j'ai acquis de solides bases en algorithmique, conception de bases de données et développement web. Ce portfolio, préparé en vue de mon épreuve E5, trace l'évolution de mes compétences.
+            </p>
+
+            <div class="scout-card">
+                <i class="fas fa-campground scout-icon"></i>
+                <div class="scout-text">
+                    <h3>Engagement Associatif : Scouts et Guides de France</h3>
+                    <p>
+                        Je suis membre des SGDF depuis l'âge de 8 ans. À l'aube de mes 20 ans, je m'engage cette année en tant que <strong>Chef</strong>. 
+                        Cette expérience humaine riche m'a forgé un fort <strong>esprit d'équipe</strong>, le sens des <strong>responsabilités</strong> et de solides capacités de <strong>leadership</strong>. Des qualités de gestion de groupe et de prise d'initiative que j'applique quotidiennement dans mes projets informatiques.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOBBIES -->
+    <section id="hobbies">
+        <h2 class="section-title">Mes <span>Hobbies</span></h2>
+        <p class="hobbies-intro">
+            En dehors de l'informatique, mes centres d'intérêt nourrissent ma curiosité,
+            mon ouverture sur le monde et mon engagement auprès des autres.
+        </p>
+
+        <div class="hobbies-grid">
+            <article class="hobby-card">
+                <div class="hobby-icon"><i class="fas fa-globe-europe"></i></div>
+                <h3>Géopolitique</h3>
+                <p>J'aime comprendre les relations internationales et les enjeux qui façonnent le monde actuel.</p>
+            </article>
+
+            <article class="hobby-card">
+                <div class="hobby-icon"><i class="fas fa-landmark"></i></div>
+                <h3>Histoire</h3>
+                <p>L'étude du passé m'aide à mieux comprendre les sociétés et les événements d'aujourd'hui.</p>
+            </article>
+
+            <article class="hobby-card">
+                <div class="hobby-icon"><i class="fas fa-map-marked-alt"></i></div>
+                <h3>Le Liban et la France</h3>
+                <p>Je m'intéresse particulièrement à la culture, à l'histoire et aux liens entre mes deux pays d'origines.</p>
+            </article>
+
+            <article class="hobby-card">
+                <div class="hobby-icon"><i class="fas fa-campground"></i></div>
+                <h3>Scoutisme</h3>
+                <p>Le scoutisme occupe une place importante dans ma vie et développe mon esprit d'équipe et mes responsabilités.</p>
+            </article>
+        </div>
+    </section>
+
+    <!-- COMPÉTENCES SLAM -->
+    <section id="competences">
+        <h2 class="section-title">Mes <span>Compétences</span></h2>
+        <div class="skills-container">
+            <div class="skill-box">
+                <div class="skill-icon"><i class="fas fa-laptop-code"></i></div>
+                <h3>Développement Web</h3>
+                <div class="tags">
+                    <span class="tag">HTML5 / CSS3</span>
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">PHP 8</span>
+                </div>
+            </div>
+            <div class="skill-box">
+                <div class="skill-icon"><i class="fas fa-terminal"></i></div>
+                <h3>Logiciel & Back-end</h3>
+                <div class="tags">
+                    <span class="tag">Python</span>
+                    <span class="tag">C# / Java</span>
+                    <span class="tag">Algorithmique</span>
+                </div>
+            </div>
+            <div class="skill-box">
+                <div class="skill-icon"><i class="fas fa-database"></i></div>
+                <h3>Données & Méthodologie</h3>
+                <div class="tags">
+                    <span class="tag">MySQL / SQL</span>
+                    <span class="tag">Merise (MCD/MLD)</span>
+                    <span class="tag">Git / GitHub</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= PROJETS ================= -->
+    <section id="projets">
+        <h2 class="section-title">Mes Réalisations <span>Professionnelles</span></h2>
+        <div class="projects-grid">
+            
+            <!-- PROJET 1 : SAFRAN -->
+            <div class="project-card">
+                <div class="project-content">
+                    <span class="project-context">Stage - Safran Landing Systems</span>
+                    <h3>App Web : Gestion des 40 ans</h3>
+                    <p>Développement d'une application web pour l'événement des 40 ans du site. Le système permettait de scanner les entrées/sorties des invités et d'afficher en temps réel le nombre de personnes présentes.</p>
+                    <div class="tags" style="justify-content: flex-start;">
+                        <span class="tag">Web</span>
+                        <span class="tag">Temps réel</span>
+                        <span class="tag">Base de données</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJET 2 : BOUTIQUE PC -->
+            <div class="project-card">
+                <div class="project-content">
+                    <span class="project-context">Stage - Boutique Informatique</span>
+                    <h3>Support &amp; Dépannage Client</h3>
+                    <p>Accueil client, analyse des besoins et réalisation de devis. Réparation de matériel en arrière-boutique et interventions à domicile pour la configuration d'équipements (PC, imprimantes, scanners).</p>
+                    <div class="tags" style="justify-content: flex-start;">
+                        <span class="tag">Support Client</span>
+                        <span class="tag">Hardware</span>
+                        <span class="tag">Réseau local</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJET 3 : MADAGASCAR -->
+            <div class="project-card">
+                <div class="project-content">
+                    <span class="project-context">Projet SGDF (Annulé)</span>
+                    <h3>Projet Madagascar : Gestion de crise</h3>
+                    <p>Préparation complète d'un projet solidaire international (budget, planification, analyse des besoins). Annulation suite à une gestion des risques et un défaut de contractualisation avec le partenaire.</p>
+                    <div class="tags" style="justify-content: flex-start;">
+                        <span class="tag">Gestion de projet</span>
+                        <span class="tag">Analyse de risques</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ================= SYNTHESE E5 ================= -->
+    <section id="tableau-e5">
+        <h2 class="section-title">Synthèse <span>E5</span></h2>
+        <div class="table-container">
+            <p style="text-align: center; margin-bottom: 2.5rem; color: var(--text-light);">
+                Cliquez sur les coches de validation pour ouvrir les documents PDF correspondants.
+            </p>
+            
+            <div style="overflow-x:auto;">
+                <table class="e5-table">
+                    <thead>
+                        <tr>
+                            <th rowspan="2" style="width: 25%;">Preuves</th>
+                            <th colspan="3" class="bloc-title">Bloc 1 : Support &amp; Projet</th>
+                            <th colspan="2" class="bloc-title">Bloc 2 : SLAM</th>
+                            <th colspan="1" class="bloc-title">Bloc 3 : Cyber</th>
+                        </tr>
+                        <tr>
+                            <!-- J'ai ajouté Mode Projet et Support pour coller parfaitement au BTS et à tes stages -->
+                            <th>Support &amp; Patrimoine</th>
+                            <th>Mode Projet</th>
+                            <th>Présence en ligne</th>
+                            <th>Concevoir solution</th>
+                            <th>Gérer données</th>
+                            <th>Protéger données</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <!-- LIGNE 1 : SAFRAN -->
+                        <tr>
+                            <td>App Web Safran</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <!-- Coche 1 : Conception SLAM -->
+                            <td><a href="preuve_safran.pdf" target="_blank" class="check-link" title="Voir la preuve"><i class="fas fa-check"></i></a></td>
+                            <!-- Coche 2 : Gérer les données (les scans) -->
+                            <td><a href="preuve_safran.pdf" target="_blank" class="check-link" title="Voir la preuve"><i class="fas fa-check"></i></a></td>
+                            <td></td>
+                        </tr>
+
+                        <!-- LIGNE 2 : BOUTIQUE PC -->
+                        <tr>
+                            <td>Dépannage Boutique</td>
+                            <!-- Coche 3 : Support & Patrimoine (Config PC/Devis) -->
+                            <td><a href="preuve_boutique_pc.pdf" target="_blank" class="check-link" title="Voir la preuve"><i class="fas fa-check"></i></a></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                        <!-- LIGNE 3 : MADAGASCAR -->
+                        <tr>
+                            <td>Projet SGDF Madagascar : Gestion de crise</td>
+                            <td></td>
+                            <!-- Coche 4 : Mode Projet (C'est ici qu'elle brille !) -->
+                            <td><a href="preuve_madagascar.pdf" target="_blank" class="check-link" title="Voir la preuve"><i class="fas fa-check"></i></a></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+
+                        <!-- LIGNE 4 : PORTFOLIO -->
+                        <tr>
+                            <td>Portfolio Web</td>
+                            <td></td>
+                            <td></td>
+                            <!-- Coche 5 : Présence en ligne -->
+                            <td><a href="preuve_portfolio.pdf" target="_blank" class="check-link" title="Voir la preuve"><i class="fas fa-check"></i></a></td>
+                            <td></td>
+                            <td></td>
+                            <!-- Coche 6 : Sécurité basique (HTTPS, RGPD contact) -->
+                            <td><a href="preuve_portfolio.pdf" target="_blank" class="check-link" title="Voir la preuve"><i class="fas fa-check"></i></a></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Bouton Officiel -->
+            <div class="download-section">
+                <p style="margin-bottom: 1rem; color: var(--text-light); font-weight: 500;">Document officiel (Grille d'évaluation)</p>
+                <a href="Tableau des compétences - E5.xlsx" class="btn" download>
+                    <i class="fas fa-file-excel" style="font-size: 1.2rem;"></i> Télécharger : Tableau des compétences - E5.xlsx
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- VEILLE TECHNOLOGIQUE 
+    <section id="veille">
+        <h2 class="section-title">Veille <span>Technologique</span></h2>
+        <div class="veille-container">
+            <div class="veille-header">
+                <i class="fas fa-satellite-dish"></i>
+                <h3>Sujet : [Ton sujet de veille technique]</h3>
+            </div>
+            <p>Dans le cadre de l'évolution constante des technologies du web et du logiciel, je mène une veille active sur ce sujet.</p>
+            <br>
+            <p><strong>Outils utilisés :</strong> Feedly (Agrégateur RSS), Twitter/X, Newsletters spécialisées (ex: Dev.to).</p>
+            
+            <ul class="veille-list">
+                <li><a href="#" target="_blank">Lien vers ton premier article analysé (Date de lecture)</a></li>
+                <li><a href="#" target="_blank">Lien vers le second article analysé (Date de lecture)</a></li>
+                <li><a href="#" target="_blank">Lien vers le troisième article analysé (Date de lecture)</a></li>
+            </ul>
+        </div>
+    </section> -->
+
+    <!-- CONTACT & FOOTER -->
+    <section id="contact">
+        <h2 class="section-title">Me <span>Contacter</span></h2>
+        
+        <footer>
+            <div class="footer-content">
+                <div class="footer-intro">
+                    <div class="footer-name">Quentin <span>JAWHAR</span></div>
+                    <p>Étudiant en BTS SIO SLAM, je conçois des solutions web et logicielles utiles, modernes et accessibles.</p>
+                </div>
+
+                <div class="footer-contact">
+                    <a href="mailto:quentin.jawhar@gmail.com"><i class="fas fa-envelope"></i> quentin.jawhar@gmail.com</a>
+                    <a href="https://www.linkedin.com/in/quentin-jawhar-3971492b4/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i> Quentin JAWHAR sur LinkedIn</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="social-links">
+                    <a href="mailto:quentin.jawhar@gmail.com" class="social-link" title="M'envoyer un email" aria-label="Envoyer un email"><i class="fas fa-envelope"></i></a>
+                    <a href="https://www.linkedin.com/in/quentin-jawhar-3971492b4/" target="_blank" rel="noopener noreferrer" class="social-link" title="Voir mon LinkedIn" aria-label="Voir mon profil LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+                <p>© 2026 - Quentin JAWHAR | BTS SIO Option SLAM</p>
+            </div>
+        </footer>
+    </section>
+
+</body>
+</html>
